@@ -10,8 +10,21 @@ class TwitterBackend(object):
         try:
             info = TwitterInfo.objects.get(id=twitter_id)
             # make sure the screen name is current
+            _dirty = False
             if info.name != username:
                 info.name = username
+                _dirty = True
+                
+            #Sometimes the credentials change - ie, are revoked and the user reauthorizes, the app is updated, etc... 
+            #We need to repersist if they change
+            if info.token != token:
+                info.token = token
+                _dirty = True
+            if info.secret != secret:
+                info.secret = secret
+                _dirty = True
+            
+            if _dirty:    
                 info.save()
             user = info.user
         except TwitterInfo.DoesNotExist:
