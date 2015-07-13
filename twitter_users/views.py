@@ -54,8 +54,10 @@ def twitter_callback(request):
                             secret      = access_token.secret)
         login(request, user)
     
-    # redirect to the authenticated view
-    redirect_to = request.session['redirect_to']
+        # redirect to the authenticated view
+        redirect_to = request.session['redirect_to']
+    else:
+        redirect_to = '/'
     if not redirect_to or not is_safe_redirect(redirect_to):
         try:
             redirect_to = reverse(settings.LOGIN_REDIRECT_VIEW, args=[user.id])
