@@ -41,17 +41,18 @@ def twitter_login(request, redirect_field_name='next'):
 def twitter_callback(request):
     oauth_token    = request.GET['oauth_token']
     oauth_verifier = request.GET['oauth_verifier']
+    denied = request.GET['denied']
+    if not denied:
+        # get an access token from Twitter
+        consumer           = oauth.Consumer(settings.KEY, settings.SECRET)
+        access_token       = oauth.AccessToken(consumer, oauth_token, oauth_verifier)
     
-    # get an access token from Twitter
-    consumer           = oauth.Consumer(settings.KEY, settings.SECRET)
-    access_token       = oauth.AccessToken(consumer, oauth_token, oauth_verifier)
-    
-    # actually log in
-    user = authenticate(twitter_id  = access_token.user_id,
-                        username    = access_token.username,
-                        token       = access_token.token,
-                        secret      = access_token.secret)
-    login(request, user)
+        # actually log in
+        user = authenticate(twitter_id  = access_token.user_id,
+                            username    = access_token.username,
+                            token       = access_token.token,
+                            secret      = access_token.secret)
+        login(request, user)
     
     # redirect to the authenticated view
     redirect_to = request.session['redirect_to']
