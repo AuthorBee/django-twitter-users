@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 
 from twitter_users import oauth
 from twitter_users import settings
+import logging
+
+logger = logging.getLogger("twitter-users.views")
 
 def is_safe_redirect(redirect_to):
     if ' ' in redirect_to:
@@ -43,9 +46,12 @@ def twitter_callback(request):
         oauth_token    = request.GET['oauth_token']
         oauth_verifier = request.GET['oauth_verifier']
         # get an access token from Twitter
+        logger.debug("Requesting oauth consumer token with: %s, %s" % (settings.KEY, settings.SECRET))
         consumer           = oauth.Consumer(settings.KEY, settings.SECRET)
+        logger.debug("Requesting oauth access token with: %s, %s, %s" % (consumer, oauth_token, oauth_verifier))
         access_token       = oauth.AccessToken(consumer, oauth_token, oauth_verifier)
-    
+        logger.debug("Received %s" % acces_token)
+        
         # actually log in
         user = authenticate(twitter_id  = access_token.user_id,
                             username    = access_token.username,
