@@ -33,7 +33,7 @@ class Token(object):
             body    = urllib.urlencode(parameters)
         )
         
-        logger.debug("Response: %s, %s -- status %s" % (response, content, response['status'])
+        logger.debug("Response: %s, %s -- status %s" % (response, content, response['status']))
         
         if response['status'] != '200':
             return None;
