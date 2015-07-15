@@ -50,7 +50,7 @@ def twitter_callback(request):
         consumer           = oauth.Consumer(settings.KEY, settings.SECRET)
         logger.debug("Requesting oauth access token with: %s, %s, %s" % (consumer, oauth_token, oauth_verifier))
         access_token       = oauth.AccessToken(consumer, oauth_token, oauth_verifier)
-        logger.debug("Received %s" % acces_token)
+        logger.debug("Received %s" % access_token)
         
         # actually log in
         user = authenticate(twitter_id  = access_token.user_id,
