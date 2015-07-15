@@ -1,5 +1,6 @@
 
-from django.conf.urls.defaults import patterns, url
+#from django.conf.urls.defaults import patterns, url
+from django.conf.urls import patterns, url, include
 
 urlpatterns = patterns('twitter_users.views',
     url(r'^login/?$',           'twitter_login',    name='twitter-login'),
