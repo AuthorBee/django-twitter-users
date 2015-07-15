@@ -1,8 +1,10 @@
 
 import oauth2
 import urllib
+import logging
 
 from twitter_users import settings
+logger = logging.getLogger("twitter-users.oauth")
 
 # not sure why this is necessary, but oauth2 does this, so I'm following its lead
 try:
@@ -60,7 +62,9 @@ class AccessToken(Token):
         
         # parse the access token by hand to get access to the additional
         # parameters that Twitter passes back, like the user id and screen name
+        logger.debug("Creating access token with: %s, %s, %s" % (ACCESS_TOKEN_URL, oauth_token, oauth_verifier))
         token_content = self._get_token(ACCESS_TOKEN_URL, oauth_token=oauth_token, oauth_verifier=oauth_verifier)
+        logger.debug("Received: %s, parsing" % token_content)
         self.params   = parse_qs(token_content)
     
     @property
