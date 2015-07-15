@@ -24,11 +24,16 @@ class Token(object):
         self.consumer = consumer
     
     def _get_token(self, url, token=None, method='POST', **parameters):
+        logger.debug("IN Get Token: with %s, %s" % (url, token))
         client            = oauth2.Client(self.consumer, token)
+        logger.debug("Received client: %s" % client)
+        
         response, content = client.request(url,
             method  = method,
             body    = urllib.urlencode(parameters)
         )
+        
+        logger.debug("Response: %s, %s -- status %s" % (response, content, response['status'])
         
         if response['status'] != '200':
             return None;
